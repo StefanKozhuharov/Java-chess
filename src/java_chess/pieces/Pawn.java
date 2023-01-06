@@ -22,7 +22,7 @@ public class Pawn extends Piece {
 
     private final static int[] CANDIDATE_MOVE_COORDINATE = {7, 8, 9, 16};
 
-    Pawn(int piecePosition, Color pieceColor) {
+    public Pawn(int piecePosition, Color pieceColor) {
         super(piecePosition, pieceColor);
     }
 
@@ -71,6 +71,11 @@ public class Pawn extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return Piece.PieceType.PAWN.toString();
     }
 
 }

@@ -23,7 +23,7 @@ public class Knight extends Piece {
 
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
-    Knight(int piecePosition, Color pieceColor) {
+    public Knight(int piecePosition, Color pieceColor) {
         super(piecePosition, pieceColor);
     }
 
@@ -58,6 +58,11 @@ public class Knight extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+    
+    @Override
+    public String toString() {
+        return Piece.PieceType.KNIGHT.toString();
     }
     
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset){
