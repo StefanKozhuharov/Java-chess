@@ -5,6 +5,7 @@
 package java_chess.player;
 
 import java.util.Collection;
+import java_chess.Color;
 import java_chess.board.Board;
 import java_chess.board.Move;
 import java_chess.pieces.Piece;
@@ -24,5 +25,15 @@ public class BlackPlayer extends Player {
     @Override
     public Collection<Piece> getActivePieces() {
         return this.board.getBlackPieces();
+    }
+    
+    @Override
+    public Color getColor() {
+        return Color.BLACK;
+    }
+    
+    @Override
+    public Player getOpponent() {
+        return this.board.whitePlayer();
     }
 }
