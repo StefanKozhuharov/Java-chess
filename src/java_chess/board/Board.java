@@ -18,6 +18,9 @@ import java_chess.pieces.Pawn;
 import java_chess.pieces.Piece;
 import java_chess.pieces.Queen;
 import java_chess.pieces.Rook;
+import java_chess.player.BlackPlayer;
+import java_chess.player.WhitePlayer;
+
 
 /**
  *
@@ -26,16 +29,20 @@ import java_chess.pieces.Rook;
 public class Board {
 
     private final List<Tile> gameBoard;
-    private final Collection<Piece> whitePiece;
-    private final Collection<Piece> blackPiece;
+    private final Collection<Piece> whitePieces;
+    private final Collection<Piece> blackPieces;
 
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
+    
     private Board(Builder builder) {
         this.gameBoard = createGameBoard(builder);
-        this.whitePiece = calculateActivePieces(this.gameBoard, Color.WHITE);
-        this.blackPiece = calculateActivePieces(this.gameBoard, Color.BLACK);
-
-        final Collection<Move> whiteStandartLegalMoes = calculateLegalMoves(this.whitePiece);
-        final Collection<Move> blackStandartLegalMoves = calculateLegalMoves(this.blackPiece);
+        this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
+        this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
+        final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
+        final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
+        this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
     }
 
     @Override
@@ -50,7 +57,15 @@ public class Board {
         }
         return builder.toString();
     }
+    
+    public Collection<Piece> getBlackPieces(){
+        return this.blackPieces;
+    }
 
+    public Collection<Piece> getWhitePieces(){
+        return this.whitePieces;
+    }
+    
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
 
         final List<Move> legalMoves = new ArrayList<>();
