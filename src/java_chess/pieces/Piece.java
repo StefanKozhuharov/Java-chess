@@ -16,11 +16,13 @@ import java_chess.board.Move;
  */
 public abstract class Piece {
 
+    protected final PieceType pieceType;
     protected final int piecePosition;
     protected final Color pieceColor;
     protected final boolean isFirstMove;
 
-    Piece(final int piecePosition, final Color pieceColor) {
+    Piece(final PieceType pieceType, final int piecePosition, final Color pieceColor) {
+        this.pieceType = pieceType;
         this.pieceColor = pieceColor;
         this.piecePosition = piecePosition;
         this.isFirstMove = false;
@@ -38,16 +40,50 @@ public abstract class Piece {
         return this.isFirstMove;
     }
 
+    public PieceType getPieceType() {
+        return this.pieceType;
+    }
+
     public abstract Collection<Move> calculateLegalMoves(final Board board);
 
     public enum PieceType {
 
-        PAWN("P"),
-        KNIGHT("N"),
-        BISHOP("B"),
-        ROOK("R"),
-        QUEEN("Q"),
-        KING("K");
+        PAWN("P") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KNIGHT("N") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        BISHOP("B") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        ROOK("R") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        QUEEN("Q") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KING("K") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        };
 
         private String pieceName;
 
@@ -59,6 +95,8 @@ public abstract class Piece {
         public String toString() {
             return this.pieceName;
         }
+
+        public abstract boolean isKing();
     }
 
 }
