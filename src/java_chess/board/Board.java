@@ -19,6 +19,7 @@ import java_chess.pieces.Piece;
 import java_chess.pieces.Queen;
 import java_chess.pieces.Rook;
 import java_chess.player.BlackPlayer;
+import java_chess.player.Player;
 import java_chess.player.WhitePlayer;
 
 
@@ -56,6 +57,14 @@ public class Board {
             }
         }
         return builder.toString();
+    }
+    
+    public Player whitePlayer(){
+        return this.whitePlayer;
+    }
+    
+    public Player blackPlayer(){
+        return this.blackPlayer;
     }
     
     public Collection<Piece> getBlackPieces(){
