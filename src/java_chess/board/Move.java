@@ -4,6 +4,7 @@
  */
 package java_chess.board;
 
+import java_chess.board.Board.Builder;
 import java_chess.pieces.Piece;
 
 /**
@@ -25,20 +26,40 @@ public abstract class Move {
     public int getDestinationCoordinate() {
         return this.destinationCoordinate;
     }
+    
+    public Piece getMovedPiece(){
+        return this.movedPiece;
+    }
 
     public static final class MajorMove extends Move {
 
         public MajorMove(final Board board, final Piece movedPiece, final int destinationCoordinate) {
             super(board, movedPiece, destinationCoordinate);
         }
-        
+
         @Override
-        public Board execute(){
-            return null;
+        public Board execute() {
+
+            final Builder builder = new Board.Builder();
+
+            for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
+                if (!this.movedPiece.equals(piece)) {
+                    builder.setPiece(piece);
+                }
+            }
+
+            for (final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
+                builder.setPiece(piece);
+            }
+            builder.setPiece(this.movedPiece.movePiece(this));
+            builder.setMoveMaker(this.board.currentPlayer().getOpponent().getColor());
+
+            return builder.build();
+
         }
-        
+
     }
-    
+
     public abstract Board execute();
 
     public static final class AttackMove extends Move {
@@ -49,12 +70,12 @@ public abstract class Move {
             super(board, movedPiece, destinationCoordinate);
             this.attackedPiece = attackedPiece;
         }
-        
+
         @Override
-        public Board execute(){
+        public Board execute() {
             return null;
         }
-        
+
     }
 
 }
