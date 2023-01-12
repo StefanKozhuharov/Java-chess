@@ -4,6 +4,10 @@
  */
 package java_chess;
 
+import java_chess.player.BlackPlayer;
+import java_chess.player.Player;
+import java_chess.player.WhitePlayer;
+
 /**
  *
  * @author stefk
@@ -24,6 +28,11 @@ public enum Color {
         public boolean isBlack() {
             return false;
         }
+        
+        @Override
+        public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer){
+            return whitePlayer;
+        }
     },
     BLACK {
         @Override
@@ -40,6 +49,11 @@ public enum Color {
         public boolean isBlack() {
             return true;
         }
+        
+        @Override
+        public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer){
+            return blackPlayer;
+        }
     };
 
     public abstract int getDirection();
@@ -47,4 +61,6 @@ public enum Color {
     public abstract boolean isWhite();
 
     public abstract boolean isBlack();
+    
+    public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
 }
