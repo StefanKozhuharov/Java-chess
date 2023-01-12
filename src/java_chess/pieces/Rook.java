@@ -23,7 +23,7 @@ public class Rook extends Piece {
 
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8, -1, 1, 8};
 
-    public Rook(int piecePosition, Color pieceColor) {
+    public Rook(final int piecePosition, final Color pieceColor) {
         super(PieceType.ROOK, piecePosition, pieceColor);
     }
 
@@ -63,6 +63,11 @@ public class Rook extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public Rook movePiece(final Move move) {
+        return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
     }
 
     @Override

@@ -23,7 +23,7 @@ public class King extends Piece {
 
     private final static int[] CANDIDATE_MOVE_COORDINATE = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    public King(int piecePosition, Color pieceColor) {
+    public King(final int piecePosition, final Color pieceColor) {
         super(PieceType.KING, piecePosition, pieceColor);
     }
 
@@ -60,6 +60,11 @@ public class King extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public King movePiece(final Move move){
+        return new King(move.getDestinationCoordinate(),move.getMovedPiece().getPieceColor());
+    }
+    
     @Override
     public String toString() {
         return Piece.PieceType.KING.toString();

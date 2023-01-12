@@ -23,7 +23,7 @@ public class Queen extends Piece {
 
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    public Queen(int piecePosition, Color pieceColor) {
+    public Queen(final int piecePosition, final Color pieceColor) {
         super(PieceType.QUEEN, piecePosition, pieceColor);
     }
 
@@ -63,6 +63,11 @@ public class Queen extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+    
+    @Override
+    public Queen movePiece(final Move move){
+        return new Queen(move.getDestinationCoordinate(),move.getMovedPiece().getPieceColor());
     }
 
     @Override

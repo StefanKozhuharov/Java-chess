@@ -23,7 +23,7 @@ public class Bishop extends Piece {
 
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
-    public Bishop(int piecePosition, Color pieceColor) {
+    public Bishop(final int piecePosition, final Color pieceColor) {
         super(PieceType.BISHOP, piecePosition, pieceColor);
     }
 
@@ -65,6 +65,11 @@ public class Bishop extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Bishop movePiece(final Move move){
+        return new Bishop(move.getDestinationCoordinate(),move.getMovedPiece().getPieceColor());
+    }
+    
     @Override
     public String toString() {
         return Piece.PieceType.BISHOP.toString();
