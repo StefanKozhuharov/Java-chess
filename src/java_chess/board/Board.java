@@ -5,6 +5,7 @@
 package java_chess.board;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,7 +23,6 @@ import java_chess.player.BlackPlayer;
 import java_chess.player.Player;
 import java_chess.player.WhitePlayer;
 
-
 /**
  *
  * @author stefk
@@ -36,7 +36,7 @@ public class Board {
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
-    
+
     private Board(final Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
@@ -60,27 +60,27 @@ public class Board {
         }
         return builder.toString();
     }
-    
-    public Player whitePlayer(){
+
+    public Player whitePlayer() {
         return this.whitePlayer;
     }
-    
-    public Player blackPlayer(){
+
+    public Player blackPlayer() {
         return this.blackPlayer;
     }
-    
-    public Player currentPlayer(){
+
+    public Player currentPlayer() {
         return this.currentPlayer;
     }
-    
-    public Collection<Piece> getBlackPieces(){
+
+    public Collection<Piece> getBlackPieces() {
         return this.blackPieces;
     }
 
-    public Collection<Piece> getWhitePieces(){
+    public Collection<Piece> getWhitePieces() {
         return this.whitePieces;
     }
-    
+
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
 
         final List<Move> legalMoves = new ArrayList<>();
@@ -161,10 +161,15 @@ public class Board {
         return builder.build();
     }
 
+    public Iterable<Move> getAllLegalMoves() {
+        return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(), this.blackPlayer.getLegalMoves()));
+    }
+
     public static class Builder {
 
         Map<Integer, Piece> boardConfig;
         Color nextMoveMaker;
+        private Pawn enPassantPawn;
 
         public Builder() {
             this.boardConfig = new HashMap<>();
@@ -183,5 +188,10 @@ public class Board {
         public Board build() {
             return new Board(this);
         }
+
+        public void setEnPassantPawn(Pawn enPassantPawn) {
+            this.enPassantPawn = enPassantPawn;
+        }
+
     }
 }
