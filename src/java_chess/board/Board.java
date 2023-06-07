@@ -180,7 +180,7 @@ public class Board {
             return this;
         }
 
-        public Builder setMoveMaker(final Color color) {
+        public Builder setMoveMaker(final Color nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }
