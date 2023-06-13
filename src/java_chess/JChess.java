@@ -5,6 +5,7 @@
 package java_chess;
 
 import java_chess.board.Board;
+import java_chess.gui.Table;
 
 /**
  *
@@ -16,5 +17,6 @@ public class JChess {
         Board board = Board.createStandardBoard();
 
         System.out.println(board);
+        Table table = new Table();
     }
 }
