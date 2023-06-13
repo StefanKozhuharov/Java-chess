@@ -24,9 +24,14 @@ public class Bishop extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
     public Bishop(final int piecePosition, final Color pieceColor) {
-        super(PieceType.BISHOP, piecePosition, pieceColor);
+        super(PieceType.BISHOP, piecePosition, pieceColor, true);
     }
-
+    
+    public Bishop(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
+        //проверяваме дали е първо местене на офицера
+        super(PieceType.BISHOP, piecePosition, pieceColor, isFirstMove);
+    }
+    
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
 

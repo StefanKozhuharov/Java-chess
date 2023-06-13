@@ -24,7 +24,12 @@ public class Queen extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public Queen(final int piecePosition, final Color pieceColor) {
-        super(PieceType.QUEEN, piecePosition, pieceColor);
+        super(PieceType.QUEEN, piecePosition, pieceColor, true);
+    }
+    
+    public Queen(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
+        //проверяваме дали е първо местене на царицата
+        super(PieceType.BISHOP, piecePosition, pieceColor, isFirstMove);
     }
 
     @Override

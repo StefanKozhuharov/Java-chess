@@ -24,7 +24,12 @@ public class Knight extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     public Knight(final int piecePosition, final Color pieceColor) {
-        super(PieceType.KNIGHT, piecePosition, pieceColor);
+        super(PieceType.KNIGHT, piecePosition, pieceColor,true);
+    }
+    
+    public Knight(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
+        //проверяваме дали е първо местене на коня
+        super(PieceType.BISHOP, piecePosition, pieceColor, isFirstMove);
     }
 
     @Override
