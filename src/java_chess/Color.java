@@ -18,6 +18,11 @@ public enum Color {
         public int getDirection() {
             return -1;
         }
+        
+        @Override
+        public int getOppositeDirection() {
+            return 1;
+        }
 
         @Override
         public boolean isWhite() {
@@ -38,6 +43,11 @@ public enum Color {
         @Override
         public int getDirection() {
             return 1;
+        }
+        
+        @Override
+        public int getOppositeDirection() {
+            return -1;
         }
 
         @Override
@@ -61,6 +71,8 @@ public enum Color {
     public abstract boolean isWhite();
 
     public abstract boolean isBlack();
+    
+    public abstract int getOppositeDirection();
     
     public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
 }
