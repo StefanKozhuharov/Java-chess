@@ -12,6 +12,7 @@ import java.util.List;
 import java_chess.Color;
 import java_chess.board.Board;
 import java_chess.board.Move;
+import java_chess.gui.EndScreen;
 import java_chess.pieces.King;
 import java_chess.pieces.Piece;
 

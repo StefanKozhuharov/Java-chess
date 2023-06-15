@@ -6,7 +6,6 @@ package java_chess;
 
 import java_chess.board.Board;
 import java_chess.gui.Table;
-
 /**
  *
  * @author stefk
@@ -14,8 +13,8 @@ import java_chess.gui.Table;
 public class JChess {
 
     public static void main(String[] args) {
+        
         Board board = Board.createStandardBoard();
-
         System.out.println(board);
         Table table = new Table();
     }

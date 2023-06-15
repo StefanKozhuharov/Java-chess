@@ -17,6 +17,8 @@ import java.util.*;
 import java_chess.pieces.Piece;
 import javax.swing.*;
 import java.util.List;
+import java_chess.JChess;
+import static java_chess.JChess.main;
 import java_chess.board.*;
 import java_chess.player.*;
 import javax.imageio.ImageIO;
@@ -26,12 +28,13 @@ import javax.imageio.ImageIO;
  * @author dimitarkg
  */
 public class Table {
-    
+
     private boolean highlightLegalMoves;
     private boolean highlightLegalMovesDeault = true;
-    
+    private boolean run = true;
+
     private final Color lightTileColor = Color.decode("#FFFACD");
-    private final Color darkTileColor = Color.decode("#593E1A");
+    private final Color darkTileColor = Color.decode("#4d99c9");
 
     private Tile sourceTile;
     private Tile destinationTile;
@@ -45,11 +48,10 @@ public class Table {
     private Board chessBoard;
     private static String defaultPieceImagesPath = "pieces/";
     private final MoveLog moveLog;
-    
+
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(700, 600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-    
 
     public Table() {
         this.gameFrame = new JFrame("Jchess");
@@ -67,58 +69,49 @@ public class Table {
         this.moveLog = new MoveLog();
         
         this.boardDirection = BoardDirection.NORMAL;
+
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.EAST);
         this.gameFrame.setVisible(true);
+
     }
 
     private JMenuBar createTableMenuBar() {
         final JMenuBar tableMenuBar = new JMenuBar();
-        tableMenuBar.add(createFileMame());
+        tableMenuBar.add(exitButton());
         tableMenuBar.add(createPreferencesMenu());
         return tableMenuBar;
     }
 
-    private JMenu createFileMame() {
-        final JMenu fileMenu = new JMenu("File");
-        final JMenuItem openPNG = new JMenuItem("Load PGN File");
-        openPNG.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("open that pgn file");
-            }
-        });
-        fileMenu.add(openPNG);
+    private JButton exitButton() {
         // бутона за излизане от играта\/
-        final JMenuItem exitMenuItem = new JMenuItem("EXIT");
-        exitMenuItem.addActionListener(new ActionListener() {
+        final JButton button = new JButton("EXIT");
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
-        fileMenu.add(exitMenuItem);
-        return fileMenu;
-    } 
-    
-    private JMenu createPreferencesMenu(){//създаваме меню зас предпочитения
+        return button;
+    }
+
+    private JMenu createPreferencesMenu() {//създаваме меню зас предпочитения
         final JMenu preferencesMenu = new JMenu("Preferences");
         //добавяме опция за завъртане на дъската
         final JMenuItem flipBoardMenuItem = new JMenuItem("FlipBoard");
-        flipBoardMenuItem.addActionListener(new ActionListener(){
+        flipBoardMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boardDirection = boardDirection.opposite();
                 boardPanel.drawBoard(chessBoard);
             }
-        
-        
+
         });
         preferencesMenu.add(flipBoardMenuItem);
         preferencesMenu.addSeparator();
         final JCheckBoxMenuItem legalMovesHighilighterCheckbox = new JCheckBoxMenuItem("Highlight Legal Moves", highlightLegalMovesDeault);
-        legalMovesHighilighterCheckbox.addActionListener(new ActionListener(){
+        legalMovesHighilighterCheckbox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 highlightLegalMoves = legalMovesHighilighterCheckbox.isSelected();
@@ -127,8 +120,8 @@ public class Table {
         preferencesMenu.add(legalMovesHighilighterCheckbox);
         return preferencesMenu;
     }
-    
-    private enum BoardDirection {//опция за завъртане на дъската
+
+    public enum BoardDirection {//опция за завъртане на дъската
         NORMAL {
             @Override
             List<TilePanel> traverse(final List<TilePanel> boardTiles) {
@@ -153,10 +146,11 @@ public class Table {
         };
 
         abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+
         abstract BoardDirection opposite();
 
     }
-    
+
     private class BoardPanel extends JPanel {// Създаваме игралното поле 
 
         final List<TilePanel> boardTiles;
@@ -176,37 +170,48 @@ public class Table {
         public void drawBoard(final Board board) {
             removeAll();
             for (final TilePanel tilePanel : boardDirection.traverse(boardTiles)) {
-                tilePanel.drawTile(board); 
+                tilePanel.drawTile(board);
                 add(tilePanel);
             }
+
             validate();
             repaint();
+            if (board.currentPlayer().isInCheckMate()) {
+                EndScreen();
+            }
         }
-        
-    }
-    public static class MoveLog{//запис на предишните ходове
 
-        private final List<Move> moves;
+    }
+
+    public static class MoveLog {//запис на предишните ходове
+
+        public final List<Move> moves;
 
         MoveLog() {
             this.moves = new ArrayList<>();
         }
-        public List<Move> getMoves(){
+
+        public List<Move> getMoves() {
             return this.moves;
         }
+
         public void addMove(final Move move) {
             this.moves.add(move);
         }
+
         public int size() {
             return this.moves.size();
         }
+
         public void clear() {
             this.moves.clear();
         }
-        public Move removeMove(int index){
+
+        public Move removeMove(int index) {
             return this.moves.remove(index);
         }
-        public boolean removeMove(final Move move){
+
+        public boolean removeMove(final Move move) {
             return this.moves.remove(move);
         }
 
@@ -301,24 +306,23 @@ public class Table {
                 }
             }
         }
-        
+
         private void highlightLegals(final Board board) {
             if (highlightLegalMoves) {
                 for (final Move move : pieceLegalMoves(board)) {
                     if (move.getDestinationCoordinate() == this.tileId) {
                         try {
                             add(new JLabel(new ImageIcon(ImageIO.read(new File("pieces/green_dot.png")))));
-                        }
-                        catch (final IOException e) {
+                        } catch (final IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             }
         }
-        
+
         private Collection<Move> pieceLegalMoves(final Board board) {
-            if(humanMovedPiece != null && humanMovedPiece.getPieceColor() == board.currentPlayer().getColor()) {
+            if (humanMovedPiece != null && humanMovedPiece.getPieceColor() == board.currentPlayer().getColor()) {
                 return humanMovedPiece.calculateLegalMoves(board);
             }
             return Collections.emptyList();
@@ -338,5 +342,16 @@ public class Table {
 
             }
         }
+    }
+
+    public void EndScreen() {
+        String winner = "";
+        if (moveLog.moves.size()%2==0) {
+            winner = "BLACK WINS";
+        }else{
+            winner = "WHITE WINS";
+        }
+        JOptionPane.showMessageDialog(null, winner, "GAME OVER",JOptionPane.PLAIN_MESSAGE);
+        System.exit(0);
     }
 }
