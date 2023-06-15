@@ -82,10 +82,11 @@ public class TakenPiecesPanel extends JPanel {//панела от ляво на 
         
         for(final Piece takenPiece : whiteTakenPieces){//слагаме изображението на всяка фигура
             try{
-                final BufferedImage image = ImageIO.read(new File("pices/"
-                        +takenPiece.getPieceColor().toString().substring(0,1)+""+ takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon();
-                final JLabel imageLable = new JLabel();
+                final BufferedImage image = ImageIO.read(new File("pieces/"
+                        +takenPiece.getPieceColor().toString().substring(0,1)+""+ takenPiece.toString()+".gif"));
+                final ImageIcon icon = new ImageIcon(image);
+                final JLabel imageLable = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
+                        icon.getIconWidth() - 15, icon.getIconWidth() - 15, Image.SCALE_SMOOTH)));
                 this.southPanel.add(imageLable);
             }catch(final IOException e){
                 e.printStackTrace();
@@ -94,11 +95,12 @@ public class TakenPiecesPanel extends JPanel {//панела от ляво на 
         
         for(final Piece takenPiece : blackTakenPieces){
             try{
-                final BufferedImage image = ImageIO.read(new File("pices/"
-                        +takenPiece.getPieceColor().toString().substring(0,1)+""+ takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon();
-                final JLabel imageLable = new JLabel();
-                this.southPanel.add(imageLable);
+                final BufferedImage image = ImageIO.read(new File("pieces/"
+                        +takenPiece.getPieceColor().toString().substring(0,1)+""+ takenPiece.toString()+".gif"));
+                final ImageIcon icon = new ImageIcon(image);
+                final JLabel imageLable = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
+                        icon.getIconWidth() - 15, icon.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+                this.northPanel.add(imageLable);
             }catch(final IOException e){
                 e.printStackTrace();
             }

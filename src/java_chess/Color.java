@@ -4,6 +4,7 @@
  */
 package java_chess;
 
+import java_chess.board.BoardUtils;
 import java_chess.player.BlackPlayer;
 import java_chess.player.Player;
 import java_chess.player.WhitePlayer;
@@ -38,6 +39,11 @@ public enum Color {
         public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer){
             return whitePlayer;
         }
+
+        @Override
+        public boolean isPawnPromotionSquare(int position) {
+            return BoardUtils.EIGHT_RANK[position];
+        }
     },
     BLACK {
         @Override
@@ -64,6 +70,11 @@ public enum Color {
         public Player choosePlayer(final WhitePlayer whitePlayer, final BlackPlayer blackPlayer){
             return blackPlayer;
         }
+
+        @Override
+        public boolean isPawnPromotionSquare(int position) {
+            return BoardUtils.FIRST_RANK[position];
+        }
     };
 
     public abstract int getDirection();
@@ -73,6 +84,8 @@ public enum Color {
     public abstract boolean isBlack();
     
     public abstract int getOppositeDirection();
+    
+    public abstract boolean isPawnPromotionSquare(int position);
     
     public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
 }

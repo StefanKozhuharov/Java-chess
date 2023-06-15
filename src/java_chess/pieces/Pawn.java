@@ -45,7 +45,11 @@ public class Pawn extends Piece {
             }
 
             if (currentCandidateOffset == 8 && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
-                legalMoves.add(new PawnMove(board, this, candidateDestinationCoordinate));
+                if (this.pieceColor.isPawnPromotionSquare(candidateDestinationCoordinate)) {
+                    legalMoves.add(new PawnPromotion(new PawnMove(board, this, candidateDestinationCoordinate)));
+                }else{
+                    legalMoves.add(new PawnMove(board, this, candidateDestinationCoordinate));
+                }
             } else if (currentCandidateOffset == 16 && this.isFirstMove()
                     && ((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceColor().isBlack())
                     || (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceColor().isWhite()))) {
@@ -60,7 +64,11 @@ public class Pawn extends Piece {
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceColor != pieceOnCandidate.getPieceColor()) {
-                        legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
+                        if (this.pieceColor.isPawnPromotionSquare(candidateDestinationCoordinate)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, candidateDestinationCoordinate,pieceOnCandidate)));
+                        }else{
+                            legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
+                        }
                     }
                 }else if (board.getEnPassantPawn() != null) {//ако ан-пасан пешката е до нашата пешка, тогава можем да направим ан-пасан
                     if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition + (this.pieceColor.getOppositeDirection()))) {
@@ -76,7 +84,11 @@ public class Pawn extends Piece {
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     final Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceColor != pieceOnCandidate.getPieceColor()) {
-                        legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
+                        if (this.pieceColor.isPawnPromotionSquare(candidateDestinationCoordinate)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, candidateDestinationCoordinate,pieceOnCandidate)));
+                        }else{
+                            legalMoves.add(new PawnAttackMove(board, this, candidateDestinationCoordinate, pieceOnCandidate));
+                        }                    
                     }
                 }else if (board.getEnPassantPawn() != null) {//ако ан-пасан пешката е до нашата пешка, тогава можем да направим ан-пасан
                     if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition - (this.pieceColor.getOppositeDirection()))) {
@@ -100,6 +112,10 @@ public class Pawn extends Piece {
     @Override
     public String toString() {
         return Piece.PieceType.PAWN.toString();
+    }
+    
+    public Piece getPromotionPiece(){
+        return new Queen( this.piecePosition,this.pieceColor, false);
     }
 
 }
